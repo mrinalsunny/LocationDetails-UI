@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, ListGroup, Button } from "react-bootstrap";
-import initialData from "../dataSource/initial-data";
+// import initialData from "../dataSource/initial-data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const BrowserTab = () => {
-  // const [controllers, setController] = useState(initialData.controllers);
+  const [browsers, setBrowsers] = useState([
+    { id: "browser-1", host: "158.234.207.101" },
+    { id: "browser-2", host: "158.234.207.102" },
+    { id: "browser-3", host: "158.234.207.103" },
+    { id: "browser-4", host: "158.234.207.104" },
+  ]);
+
+  const AddToBrowser = () => {
+    setBrowsers((browsers) => [
+      ...browsers,
+      { id: "browser-" + (browsers.length + 1), host: "158.234.207.105" },
+    ]);
+  };
 
   return (
     <div>
-      {Object.entries(initialData.browsers).map((browser) => (
+      {Object.entries(browsers).map((browser) => (
         <div>
           <Card style={{ width: "18rem" }}>
             <ListGroup variant="flush">
@@ -23,7 +35,7 @@ const BrowserTab = () => {
           <br />
         </div>
       ))}
-      <Button style={{ width: "18rem" }}>
+      <Button onClick={AddToBrowser} style={{ width: "18rem" }}>
         <FontAwesomeIcon icon={faPlus} />
       </Button>
     </div>
