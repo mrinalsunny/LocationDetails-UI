@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Card, ListGroup, Button } from "react-bootstrap";
-// import initialData from "../dataSource/initial-data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const BrowserTab = () => {
   const [browsers, setBrowsers] = useState([
@@ -25,9 +24,12 @@ const BrowserTab = () => {
         <div>
           <Card style={{ width: "18rem" }}>
             <ListGroup variant="flush">
+              <Button variant="link">
+                <FontAwesomeIcon icon={faEdit} />
+              </Button>
               <ListGroup.Item key={browser[1].id}>
                 {browser[1].id}
-                <hr />
+                <br />
                 {browser[1].host}
               </ListGroup.Item>
             </ListGroup>
