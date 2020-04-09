@@ -1,6 +1,8 @@
 import React from "react";
-import { Card, ListGroup } from "react-bootstrap";
+import { Card, ListGroup, Button } from "react-bootstrap";
 import initialData from "../dataSource/initial-data";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const DatabaseTab = () => {
   // const [controllers, setController] = useState(initialData.controllers);
@@ -18,9 +20,12 @@ const DatabaseTab = () => {
               </ListGroup.Item>
             </ListGroup>
           </Card>
-          <br></br>
+          <br />
         </div>
       ))}
+      <Button style={{ width: "18rem" }}>
+        <FontAwesomeIcon icon={faPlus} />
+      </Button>
     </div>
   );
 };
