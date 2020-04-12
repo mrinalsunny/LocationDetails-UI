@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Card, ListGroup, Button } from "react-bootstrap";
+import {
+  Card,
+  ListGroup,
+  Button,
+  Modal,
+  Form,
+  Row,
+  Col,
+} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 const BrowserTab = () => {
   const [browsers, setBrowsers] = useState([]);
+  const [editingBrowser, setEditingBrowser] = useState(null);
 
   useEffect(() => {
     axios
@@ -39,19 +48,55 @@ const BrowserTab = () => {
     });
   };
 
+  const renderBrowserEditModal = () => {
+    if (editingBrowser) {
+      return (
+        <div>
+          <Modal
+            show="true"
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+            animation={true}
+            onHide={() => setEditingBrowser(null)}
+          >
+            <Modal.Header>{editingBrowser.host}</Modal.Header>
+            <Modal.Body></Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="secondary"
+                onClick={() => setEditingBrowser(null)}
+              >
+                Close
+              </Button>
+              <Button variant="primary">Save changes</Button>
+            </Modal.Footer>
+          </Modal>
+          {editingBrowser.host}
+        </div>
+      );
+    }
+  };
+
   return (
     <div>
-      {Object.entries(browsers).map((browser) => (
-        <div key={browser[1].id}>
+      {browsers.map((browser) => (
+        <div key={browser.id}>
           <Card style={{ width: "18rem" }}>
             <ListGroup variant="flush">
-              <Button variant="link">
+              <Button variant="link" onClick={() => setEditingBrowser(browser)}>
                 <FontAwesomeIcon icon={faEdit} />
               </Button>
               <ListGroup.Item>
-                {browser[1].host}
+                {browser.host}
                 <br />
-                {browser[1].id}
+                {browser.username}
+                <br />
+                {browser.password}
+                <br />
+                {browser.owner}
+                <br />
+                {browser.modifiedDate}
               </ListGroup.Item>
             </ListGroup>
           </Card>
@@ -61,6 +106,7 @@ const BrowserTab = () => {
       <Button onClick={AddToBrowser} style={{ width: "18rem" }}>
         <FontAwesomeIcon icon={faPlus} />
       </Button>
+      {renderBrowserEditModal()}
     </div>
   );
 };
