@@ -10,10 +10,10 @@ const DatabaseTab = () => {
   return (
     <div>
       {Object.entries(initialData.databases).map((database) => (
-        <div>
+        <div key={database[1].id}>
           <Card style={{ width: "18rem" }}>
             <ListGroup variant="flush">
-              <ListGroup.Item key={database[1].id}>
+              <ListGroup.Item>
                 {database[1].id}
                 <hr />
                 {database[1].host}

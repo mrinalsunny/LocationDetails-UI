@@ -10,10 +10,10 @@ const ControllerTab = () => {
   return (
     <div>
       {Object.entries(initialData.controllers).map((controller) => (
-        <div>
+        <div key={controller[1].id}>
           <Card style={{ width: "18rem" }}>
             <ListGroup variant="flush">
-              <ListGroup.Item key={controller[1].id}>
+              <ListGroup.Item>
                 {controller[1].id}
                 <hr />
                 {controller[1].host}
