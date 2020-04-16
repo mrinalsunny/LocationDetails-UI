@@ -71,7 +71,7 @@ const BrowserTab = () => {
       return (
         <div>
           <Modal
-            show="true"
+            show={true}
             size="sm"
             aria-labelledby="contained-modal-title-vcenter"
             centered
