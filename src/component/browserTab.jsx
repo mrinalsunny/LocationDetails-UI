@@ -5,13 +5,14 @@ import {
   ListGroup,
   Button,
   Modal,
-  Form,
   Row,
   Col,
+  Form,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import Moment from "react-moment";
 
 const BrowserTab = () => {
   const [browsers, setBrowsers] = useState([]);
@@ -21,6 +22,7 @@ const BrowserTab = () => {
     axios
       .get("/api/browser/get/all")
       .then((response) => {
+        console.log("From useEffect");
         console.log(response);
         setBrowsers((browsers) => response.data);
       })
@@ -51,19 +53,17 @@ const BrowserTab = () => {
   };
 
   const saveEdit = (props) => {
-    console.log(
-      props
-      // (browsers[browsers.findIndex((browser) => browser === editingBrowser)] = {
-      //   id: editingBrowser.id,
-      //   host: "158.234.207.103",
-      //   username: "",
-      //   password: "",
-      //   owner: "",
-      //   isEditable: "",
-      //   modifiedDate: "2020-04-14T09:54:43.128+0000",
-      // })
-    );
+    browsers[browsers.findIndex((browser) => browser === editingBrowser)] = {
+      id: editingBrowser.id,
+      host: props.host,
+      username: props.username,
+      password: props.password,
+      owner: props.owner,
+      modifiedDate: Date.now(),
+    };
     setEditingBrowser(null);
+    console.log("From saveEdit");
+    console.log(browsers);
   };
 
   const renderBrowserEditModal = () => {
@@ -72,7 +72,7 @@ const BrowserTab = () => {
         <div>
           <Modal
             show="true"
-            size="lg"
+            size="sm"
             aria-labelledby="contained-modal-title-vcenter"
             centered
             animation={true}
@@ -81,23 +81,79 @@ const BrowserTab = () => {
             <Modal.Header>{editingBrowser.id}</Modal.Header>
 
             <Formik
-              initialValues={{ host: editingBrowser.host }}
+              initialValues={{
+                host: editingBrowser.host,
+                username: editingBrowser.username,
+                password: editingBrowser.password,
+                owner: editingBrowser.owner,
+              }}
               onSubmit={saveEdit}
             >
               {(props) => (
                 <form onSubmit={props.handleSubmit}>
                   <Modal.Body>
-                    <input
-                      type="text"
-                      onChange={props.handleChange}
-                      onBlur={props.handleBlur}
-                      value={props.values.host}
-                      name="host"
-                    />
+                    <Form>
+                      <Form.Group as={Row} controlId="formPlaintextPassword">
+                        <Form.Label column sm="3">
+                          Host
+                        </Form.Label>
+                        <Col sm="9">
+                          <Form.Control
+                            type="text"
+                            onChange={props.handleChange}
+                            onBlur={props.handleBlur}
+                            value={props.values.host}
+                            name="host"
+                          />
+                        </Col>
+                      </Form.Group>
+                      <Form.Group as={Row} controlId="formPlaintextPassword">
+                        <Form.Label column sm="3">
+                          Username
+                        </Form.Label>
+                        <Col sm="9">
+                          <Form.Control
+                            type="text"
+                            onChange={props.handleChange}
+                            onBlur={props.handleBlur}
+                            value={props.values.username}
+                            name="username"
+                          />
+                        </Col>
+                      </Form.Group>
+                      <Form.Group as={Row} controlId="formPlaintextPassword">
+                        <Form.Label column sm="3">
+                          Password
+                        </Form.Label>
+                        <Col sm="9">
+                          <Form.Control
+                            type="text"
+                            onChange={props.handleChange}
+                            onBlur={props.handleBlur}
+                            value={props.values.password}
+                            name="password"
+                          />
+                        </Col>
+                      </Form.Group>
+                      <Form.Group as={Row} controlId="formPlaintextPassword">
+                        <Form.Label column sm="3">
+                          Owner
+                        </Form.Label>
+                        <Col sm="9">
+                          <Form.Control
+                            type="text"
+                            onChange={props.handleChange}
+                            onBlur={props.handleBlur}
+                            value={props.values.owner}
+                            name="owner"
+                          />
+                        </Col>
+                      </Form.Group>
+                    </Form>
                   </Modal.Body>
-                  {props.errors.name && (
+                  {/* {props.errors.name && (
                     <div id="feedback">{props.errors.host}</div>
-                  )}
+                  )} */}
                   <Modal.Footer>
                     <Button
                       variant="secondary"
@@ -109,12 +165,10 @@ const BrowserTab = () => {
                       Save changes
                     </Button>
                   </Modal.Footer>
-                  {/* <Button type="submit">Submit</Button> */}
                 </form>
               )}
             </Formik>
           </Modal>
-          {editingBrowser.host}
         </div>
       );
     }
@@ -130,15 +184,22 @@ const BrowserTab = () => {
                 <FontAwesomeIcon icon={faEdit} />
               </Button>
               <ListGroup.Item>
-                {browser.host}
-                <br />
-                {browser.username}
-                <br />
-                {browser.password}
-                <br />
-                {browser.owner}
-                <br />
-                {browser.modifiedDate}
+                <Row>
+                  <Col sm="5">Host</Col>
+                  <Col sm="7">{browser.host}</Col>
+                  <Col sm="5">Username</Col>
+                  <Col sm="7">{browser.username}</Col>
+                  <Col sm="5">Password</Col>
+                  <Col sm="7">{browser.password}</Col>
+                  <Col sm="5">Owner</Col>
+                  <Col sm="7">{browser.owner}</Col>
+                  <Col sm="5">Updated</Col>
+                  <Col sm="7">
+                    <Moment format="DD-MM-YY HH:MM:ss">
+                      {browser.modifiedDate}
+                    </Moment>
+                  </Col>
+                </Row>
               </ListGroup.Item>
             </ListGroup>
           </Card>

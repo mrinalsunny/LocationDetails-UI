@@ -1,11 +1,15 @@
 import React from "react";
 import Navbar from "./component/navbar";
-import { Container } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 const App = () => {
   return (
     <Container fluid>
-      <Navbar />
+      <Row>
+        <Col>
+          <Navbar />
+        </Col>
+      </Row>
     </Container>
   );
 };
