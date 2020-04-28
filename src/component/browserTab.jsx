@@ -20,7 +20,7 @@ const BrowserTab = () => {
 
   useEffect(() => {
     axios
-      .get("/api/browser/get/all")
+      .get("/api/v1/browser/get/all")
       .then((response) => {
         console.log("From useEffect");
         console.log(response);
@@ -33,7 +33,7 @@ const BrowserTab = () => {
 
   const PushToBrowserApi = (props) => {
     return axios
-      .post("/api/browser/add", props)
+      .post("/api/v1/browser/add", props)
       .then((response) => response.data)
       .catch((error) => {
         console.log(error);
