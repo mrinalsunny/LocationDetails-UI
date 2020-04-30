@@ -8,11 +8,13 @@ import {
   Row,
   Col,
   Form,
+  Alert,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Moment from "react-moment";
+import RenderModal from "./editModal";
 
 const BrowserTab = () => {
   const [browsers, setBrowsers] = useState([]);
@@ -65,143 +67,162 @@ const BrowserTab = () => {
     console.log("From saveEdit");
     console.log(browsers);
   };
-
-  const renderBrowserEditModal = () => {
-    if (editingBrowser) {
-      return (
-        <div>
-          <Modal
-            show={true}
-            size="sm"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-            animation={true}
-            onHide={() => setEditingBrowser(null)}
-          >
-            <Modal.Header>{editingBrowser.id}</Modal.Header>
-
-            <Formik
-              initialValues={{
-                host: editingBrowser.host,
-                username: editingBrowser.username,
-                password: editingBrowser.password,
-                owner: editingBrowser.owner,
-              }}
-              onSubmit={saveEdit}
-            >
-              {(props) => (
-                <form onSubmit={props.handleSubmit}>
-                  <Modal.Body>
-                    <Form>
-                      <Form.Group as={Row} controlId="formPlaintextPassword">
-                        <Form.Label column sm="3">
-                          Host
-                        </Form.Label>
-                        <Col sm="9">
-                          <Form.Control
-                            type="text"
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.host}
-                            name="host"
-                          />
-                        </Col>
-                      </Form.Group>
-                      <Form.Group as={Row} controlId="formPlaintextPassword">
-                        <Form.Label column sm="3">
-                          Username
-                        </Form.Label>
-                        <Col sm="9">
-                          <Form.Control
-                            type="text"
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.username}
-                            name="username"
-                          />
-                        </Col>
-                      </Form.Group>
-                      <Form.Group as={Row} controlId="formPlaintextPassword">
-                        <Form.Label column sm="3">
-                          Password
-                        </Form.Label>
-                        <Col sm="9">
-                          <Form.Control
-                            type="text"
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.password}
-                            name="password"
-                          />
-                        </Col>
-                      </Form.Group>
-                      <Form.Group as={Row} controlId="formPlaintextPassword">
-                        <Form.Label column sm="3">
-                          Owner
-                        </Form.Label>
-                        <Col sm="9">
-                          <Form.Control
-                            type="text"
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.owner}
-                            name="owner"
-                          />
-                        </Col>
-                      </Form.Group>
-                    </Form>
-                  </Modal.Body>
-                  {/* {props.errors.name && (
-                    <div id="feedback">{props.errors.host}</div>
-                  )} */}
-                  <Modal.Footer>
-                    <Button
-                      variant="secondary"
-                      onClick={() => setEditingBrowser(null)}
-                    >
-                      Close
-                    </Button>
-                    <Button type="submit" variant="primary">
-                      Save changes
-                    </Button>
-                  </Modal.Footer>
-                </form>
-              )}
-            </Formik>
-          </Modal>
-        </div>
-      );
-    }
+  const editBrowser = (props) => {
+    console.log("From editBrowser : " + JSON.stringify(props));
+    return <RenderModal editingBrowser={editingBrowser} />;
   };
+  // const RenderEditModal = () => {
+  //   if (editingBrowser) {
+  //     return (
+  //       <div>
+  //         <Modal
+  //           show={true}
+  //           size="sm"
+  //           aria-labelledby="contained-modal-title-vcenter"
+  //           centered
+  //           animation={true}
+  //           onHide={() => setEditingBrowser(null)}
+  //         >
+  //           <Modal.Header>{editingBrowser.id}</Modal.Header>
+
+  //           <Formik
+  //             initialValues={{
+  //               host: editingBrowser.host,
+  //               username: editingBrowser.username,
+  //               password: editingBrowser.password,
+  //               owner: editingBrowser.owner,
+  //             }}
+  //             onSubmit={saveEdit}
+  //           >
+  //             {(props) => (
+  //               <form onSubmit={props.handleSubmit}>
+  //                 <Modal.Body>
+  //                   <Form>
+  //                     <Form.Group as={Row} controlId="formPlaintextPassword">
+  //                       <Form.Label column sm="3">
+  //                         Host
+  //                       </Form.Label>
+  //                       <Col sm="9">
+  //                         <Form.Control
+  //                           type="text"
+  //                           onChange={props.handleChange}
+  //                           onBlur={props.handleBlur}
+  //                           value={props.values.host}
+  //                           name="host"
+  //                         />
+  //                       </Col>
+  //                     </Form.Group>
+  //                     <Form.Group as={Row} controlId="formPlaintextPassword">
+  //                       <Form.Label column sm="3">
+  //                         Username
+  //                       </Form.Label>
+  //                       <Col sm="9">
+  //                         <Form.Control
+  //                           type="text"
+  //                           onChange={props.handleChange}
+  //                           onBlur={props.handleBlur}
+  //                           value={props.values.username}
+  //                           name="username"
+  //                         />
+  //                       </Col>
+  //                     </Form.Group>
+  //                     <Form.Group as={Row} controlId="formPlaintextPassword">
+  //                       <Form.Label column sm="3">
+  //                         Password
+  //                       </Form.Label>
+  //                       <Col sm="9">
+  //                         <Form.Control
+  //                           type="text"
+  //                           onChange={props.handleChange}
+  //                           onBlur={props.handleBlur}
+  //                           value={props.values.password}
+  //                           name="password"
+  //                         />
+  //                       </Col>
+  //                     </Form.Group>
+  //                     <Form.Group as={Row} controlId="formPlaintextPassword">
+  //                       <Form.Label column sm="3">
+  //                         Owner
+  //                       </Form.Label>
+  //                       <Col sm="9">
+  //                         <Form.Control
+  //                           type="text"
+  //                           onChange={props.handleChange}
+  //                           onBlur={props.handleBlur}
+  //                           value={props.values.owner}
+  //                           name="owner"
+  //                         />
+  //                       </Col>
+  //                     </Form.Group>
+  //                   </Form>
+  //                 </Modal.Body>
+  //                 {/* {props.errors.name && (
+  //                   <div id="feedback">{props.errors.host}</div>
+  //                 )} */}
+  //                 <Modal.Footer>
+  //                   <Button
+  //                     variant="secondary"
+  //                     onClick={() => setEditingBrowser(null)}
+  //                   >
+  //                     Close
+  //                   </Button>
+  //                   <Button type="submit" variant="primary">
+  //                     Save changes
+  //                   </Button>
+  //                 </Modal.Footer>
+  //               </form>
+  //             )}
+  //           </Formik>
+  //         </Modal>
+  //       </div>
+  //     );
+  //   }
+  // };
 
   return (
     <div>
       {browsers.map((browser) => (
         <div key={browser.id}>
           <Card style={{ width: "18rem" }}>
-            <ListGroup variant="flush">
-              <Button variant="link" onClick={() => setEditingBrowser(browser)}>
-                <FontAwesomeIcon icon={faEdit} />
-              </Button>
-              <ListGroup.Item>
-                <Row>
-                  <Col sm="5">Host</Col>
-                  <Col sm="7">{browser.host}</Col>
-                  <Col sm="5">Username</Col>
-                  <Col sm="7">{browser.username}</Col>
-                  <Col sm="5">Password</Col>
-                  <Col sm="7">{browser.password}</Col>
-                  <Col sm="5">Owner</Col>
-                  <Col sm="7">{browser.owner}</Col>
-                  <Col sm="5">Updated</Col>
-                  <Col sm="7">
-                    <Moment format="DD-MM-YY HH:MM:ss">
-                      {browser.modifiedDate}
-                    </Moment>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            </ListGroup>
+            <Card.Header as="h6">
+              <Row>
+                <Col sm="9">{browser.app}</Col>
+                <Col sm="3">
+                  <Button
+                    variant="link"
+                    onClick={() => {
+                      setEditingBrowser(browser);
+                      console.log("clicked on edit!");
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faEdit} />
+                  </Button>
+                </Col>
+              </Row>
+            </Card.Header>
+            <Card.Body>
+              <Row>
+                <Col sm="5">App</Col>
+                <Col sm="7">{browser.app}</Col>
+                <Col sm="5">Host</Col>
+                <Col sm="7">{browser.host}</Col>
+                <Col sm="5">Username</Col>
+                <Col sm="7">{browser.username}</Col>
+                <Col sm="5">Password</Col>
+                <Col sm="7">{browser.password}</Col>
+                <Col sm="5">Owner</Col>
+                <Col sm="7">{browser.owner}</Col>
+                <Col sm="5">Updated</Col>
+                <Col sm="7">
+                  <Moment format="DD-MM-YY HH:MM:ss">
+                    {browser.modifiedDate}
+                  </Moment>
+                </Col>
+              </Row>
+            </Card.Body>
+            <Card.Footer className="text-muted text-center">
+              Last used 2days ago
+            </Card.Footer>
           </Card>
           <br />
         </div>
@@ -209,7 +230,11 @@ const BrowserTab = () => {
       <Button onClick={AddToBrowser} style={{ width: "18rem" }}>
         <FontAwesomeIcon icon={faPlus} />
       </Button>
-      {renderBrowserEditModal()}
+      <RenderModal
+        editing={editingBrowser}
+        setEditing={setEditingBrowser}
+        // saveEdit={saveEdit}
+      />
     </div>
   );
 };
